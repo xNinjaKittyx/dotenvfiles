@@ -1,0 +1,10 @@
+[user]
+    name = xNinjaKittyx
+    email = {{ .email }}
+    signingkey = 8166BC81BAADB205
+
+[includeIf "gitdir:~/work/"]
+    path = ~/.config/git/work/config
+
+[commit]
+    gpgsign = True

@@ -1,0 +1,37 @@
+{{ if and (eq .osid "linux-ubuntu" "linux-arch") (not .ephemeral) -}}
+
+{{ $packages := list
+    "bat"
+    "git"
+    "ripgrep"
+    "tldr"
+    "tmux"
+    "zsh" -}}
+
+{{ if eq .osid "linux-ubuntu" -}}
+{{   $packages  = mustAppend $packages "fd-find" -}}
+{{ end -}}
+
+{{ if eq .osid "linux-arch" -}}
+{{   $packages = mustAppend $packages "fd" -}}
+{{ end -}}
+
+{{ $sudo := "sudo " -}}
+{{ if eq .chezmoi.username "root" -}}
+{{   $sudo = "" -}}
+{{ end -}}
+
+#!/bin/bash
+
+set -eufo pipefail
+
+{{ if eq .osid "linux-ubuntu" -}}
+{{ $sudo }}apt-get update
+{{ $sudo }}apt-get install -y {{ $packages | join " " }}
+{{ end -}}
+
+{{ if eq .osid "linux-arch" -}}
+{{ $sudo }}pacman -Sy {{ $packages | join " " }}
+{{ end -}}
+
+{{ end -}}

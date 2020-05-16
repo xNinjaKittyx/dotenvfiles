@@ -1,0 +1,34 @@
+{{ if eq .osid "darwin" -}}
+#!/bin/bash
+
+set -eufo pipefail
+
+echo "macOS Detected"
+
+if xcode-select -p &>/dev/null; then
+    echo "Xcode already installed"
+else
+    echo "Installing commandline tools..."
+    xcode-select --install
+fi
+
+{{- if not (lookPath "brew") }}
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+{{- end }}
+
+brew analytics off
+{{ $brews := list
+     "bat"
+     "curl"
+     "eza"
+     "fd"
+     "ffmpeg"
+     "fzf"
+     "git"
+     "jq"
+     "ripgrep"
+     "tmux"
+     "wget"
+     "yt-dlp" -}}
+
+{{- end }}

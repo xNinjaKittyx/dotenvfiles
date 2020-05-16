@@ -1,0 +1,42 @@
+{{/* boolean feature tags */}}
+{{- $ephemeral := false -}}{{/* true if this machine is ephemeral, e.g. a cloud or VM instance */}}
+{{- $work := false -}}{{/* true if this machine is a work machine */}}
+{{- $headless := false -}}{{/* true if this machine does not have a screen and keyboard */}}
+{{- $personal := false -}}{{/* true if this machine should have personal secrets */}}
+{{- "" -}}
+
+{{- $osID := .chezmoi.os -}}
+{{- if (and (eq .chezmoi.os "linux") (hasKey .chezmoi.osRelease "id")) -}}
+{{-   $osID = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id -}}
+{{- end -}}
+
+{{- if or (env "CODER") (env "CODESPACES") -}}
+{{-   $ephemeral = true -}}
+{{-   $headless = true -}}
+{{- end -}}
+
+{{- if eq $osID "darwin" }}
+{{-     $work = true -}}
+{{- end }}
+
+{{- if env "CODER" }}
+sourceDir = {{ joinPath .chezmoi.homeDir ".config/coderv2/dotfiles" | quote }}
+{{- if stat (joinPath .chezmoi.homeDir ".vworkstation/metadata.json") }}
+{{ joinPath .chezmoi.homeDir ".vworkstation/metadata.json" | include | fromJson | toToml -}}
+{{ $work = true -}}
+{{- end }}
+{{- end }}
+
+{{- $email := "xNinjaKittyx@users.noreply.github.com" }}
+
+[data]
+    ephemeral = {{ $ephemeral }}
+    work = {{ $work }}
+    osid = {{ $osID | quote }}
+    headless = {{ $headless }}
+    personal = {{ $personal }}
+    zshPlugins = [
+        "zsh-autosuggestions",
+        "zsh-syntax-highlighting",
+    ]
+    email = {{ $email | quote }}

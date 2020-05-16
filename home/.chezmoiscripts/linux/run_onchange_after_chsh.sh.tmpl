@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -eufo pipefail
+{{ if eq .osid "darwin" -}}
+sudo sh -c "echo $(which zsh) >> /etc/shells"
+{{ end -}}
+
+{{ if .ephemeral -}}
+echo "Using coder, so need a way to adjust PAM."
+sudo sed s/required/sufficient/g -i /etc/pam.d/chsh
+chsh -s $(which zsh)
+sudo sed s/sufficient/required/g -i /etc/pam.d/chsh
+{{ else -}}
+chsh -s $(which zsh)
+{{ end -}}

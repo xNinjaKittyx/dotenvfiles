@@ -1,0 +1,94 @@
+{{- if eq .osid "linux-ubuntu" "linux-unraid-os" -}}
+
+[".local/bin/bw"]
+    type = "archive-file"
+    url = "https://bitwarden.com/download/?app=cli&platform=linux"
+    executable = true
+    path = "bw"
+
+[".local/bin/eza"]
+    type = "archive-file"
+    url = {{ gitHubLatestReleaseAssetURL "eza-community/eza" "eza_x86_64-unknown-linux-gnu.tar.gz" | quote }}
+    executable = true
+    path = "./eza"
+
+[".local/bin/fzf"]
+    type = "archive-file"
+    url = {{ gitHubLatestReleaseAssetURL "junegunn/fzf" (printf "fzf-*-%s_%s.tar.gz" .chezmoi.os .chezmoi.arch) | quote }}
+    executable = true
+    path = "fzf"
+
+[".local/bin/nvim"]
+    type = "file"
+    url = "https://github.com/neovim/neovim/releases/download/stable/nvim-linux-x86_64.appimage"
+    refreshPeriod = "672h"
+    executable = true
+
+[".local/bin/uv"]
+    type = "archive-file"
+    url = {{ gitHubLatestReleaseAssetURL "astral-sh/uv" "uv-x86_64-unknown-linux-gnu.tar.gz" | quote }}
+    refreshPeriod = "72h"
+    executable = true
+    path = "uv-x86_64-unknown-linux-gnu/uv"
+
+{{- end }}
+
+{{- if eq .osid "darwin" }}
+[".local/bin/bw"]
+    type = "archive-file"
+    url = "https://bitwarden.com/download/?app=cli&platform=macos"
+    executable = true
+    path = "bw"
+{{- end }}
+
+[".tmux/plugins/tpm"]
+    type = "git-repo"
+    url = "https://github.com/tmux-plugins/tpm"
+    refreshPeriod = "1h"
+
+[".local/bin/spf"]
+    type = "archive-file"
+    url = {{ gitHubLatestReleaseAssetURL "yorukot/superfile" (printf "superfile-%s-*-%s.tar.gz" .chezmoi.os .chezmoi.arch) | quote }}
+    refreshPeriod = "72h"
+    stripComponents = 3
+    executable = true
+    path = "spf"
+
+
+[".oh-my-zsh"]
+    type = "archive"
+    url = "https://github.com/ohmyzsh/ohmyzsh/archive/master.tar.gz"
+    exact = true
+    stripComponents = 1
+    refreshPeriod = "168h"
+    exclude = [
+        "*/.*",
+        "*/templates",
+        "*/themes",
+    ]
+
+[".oh-my-zsh/custom/plugins/zsh-syntax-highlighting"]
+    type = "archive"
+    url = "https://github.com/zsh-users/zsh-syntax-highlighting/archive/master.tar.gz"
+    exact = true
+    stripComponents = 1
+    refreshPeriod = "168h"
+    exclude = [
+        "*/.editorconfig",
+        "*/.gitattributes",
+        "*/.github",
+        "*/.gitignore",
+    ]
+
+[".oh-my-zsh/custom/plugins/zsh-autosuggestions"]
+    type = "archive"
+    url = "https://github.com/zsh-users/zsh-autosuggestions/archive/master.tar.gz"
+    exact = true
+    stripComponents = 1
+    refreshPeriod = "168h"
+    exclude = [
+        "*/.editorconfig",
+        "*/.gitattributes",
+        "*/.github",
+        "*/.gitignore",
+    ]
