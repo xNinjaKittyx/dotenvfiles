@@ -19,12 +19,22 @@ Currently not ready to be used as is.
 # Linux Configuration
 
 **Distro**: Manjaro
+
 **Terminal**: xfce4-terminal
+
 **Shell**: zsh
+
 **Editor**: vim
+
 **DE/WM**: xfce4/xfwm4
+
 **Colorscheme**: Everything is nord-based
+
 **Icons**: ?
-**Lockscreen**: 
+
+**Lockscreen**: lightdm-webkit2-greeter
+
 **Music Player**: Audacious
+
 **Video Player**: mpv
+
