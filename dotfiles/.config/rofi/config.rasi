@@ -1,0 +1,7 @@
+configuration {
+    modi: "combi";
+    show-icons: true;
+    theme: "nord";
+    combi-modi: "drun,window,run";
+}
+

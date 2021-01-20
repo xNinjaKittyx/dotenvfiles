@@ -1,0 +1,181 @@
+conky.config = {
+
+    -------------------------------------
+    --  Generic Settings
+    -------------------------------------
+    background=true,
+    cpu_avg_samples=4,
+    update_interval=5,
+    double_buffer=true,
+    no_buffers=true,
+    imlib_cache_size=0,
+
+    draw_shades=false,
+    draw_outline=false,
+    draw_borders=false,
+
+
+    -------------------------------------
+    --  Window Specifications
+    -------------------------------------
+    gap_x=10,
+    gap_y=25,
+
+    alignment="top_right",
+
+    minimum_height=1080,
+    minimum_width=400,
+
+    own_window=true,
+    own_window_type="desktop",
+    own_window_transparent=false,
+    own_window_argb_visual=true,
+    own_window_argb_value=90,
+    own_window_hints="undecorated,below,sticky,skip_taskbar,skip_pager",
+
+
+    -------------------------------------
+    --  Text Settings
+    -------------------------------------
+    use_xft=true,
+    xftalpha=1,
+    font="Noto Sans CJK JP:style=Medium,Regular:size=12",
+    text_buffer_size=256,
+    override_utf8_locale=true,
+
+
+    -------------------------------------
+    --  Color Scheme
+    -------------------------------------
+    default_color='eceff4',
+
+    color0='d8dee9', -- white2
+    color1='4c566a', -- dark1
+    color2='2e3440', -- dark2
+    color3='5e81ac', -- blue
+    color4='bf616a', -- red
+    color5='d08770', -- orange
+    color5='ebcb8b', -- yellow
+    color6='a3be8c', -- green
+    color7='81a1c1', -- purple
+    color8='88c0d0', -- white3
+    color9='8fbcbb', -- white3
+}
+
+
+---------------------------------------------------
+---------------------------------------------------
+
+
+conky.text = [[
+###########
+#### Clock
+###########
+${font NotoSans-Regular:weight=Light:size=42}${color0}\
+${alignc}${time %H:%M}\
+${font}${color}
+\
+${font NotoSans-Regular:weight=Light:size=26}${color8}\
+${alignc}${execi 300 date +"%a, %b %d"}\
+${font}${color}
+\
+
+${font NotoSans-Bold:size=16}${color4}${nodename} ${hr}${color}${font}
+
+${offset 5}Kernel  ${voffset -6}${alignr}${font NotoSansMono-Regular:size=12}${kernel}${font}
+${offset 5}Uptime  ${voffset -6}${alignr}${font NotoSansMono-Regular:size=12}${uptime}${font}
+
+###########
+#### CPU
+###########
+${font NotoSans-Bold:size=12}${color5}${execi 99999 "lscpu | grep "Model name" | sed 's/.*:\s*//g'"} ${hr}${color}${font}
+
+${offset 5}Frequency ${voffset -6}${alignr}${font NotoSansMono-Regular:size=12}$freq_g GHz${font}
+${offset 5}CPU Usage ${voffset -6}${alignr}${font NotoSansMono-Regular:size=12}$cpu%${font}
+${offset 5}Temp      ${voffset -6}${alignr}${font NotoSansMono-Regular:size=12}${acpitemp}°C${font}
+
+###########
+#### GPU
+###########
+${font NotoSans-Bold:size=16}${color6}GTX 1080Ti - 12GB ${hr}${color}${font}
+
+${offset 5}Frequency   ${voffset -6}${alignr}${font NotoSansMono-Regular:size=12}${nvidia gpufreq} Mhz${font}
+${offset 5}Memory      ${voffset -6}${alignr}${font NotoSansMono-Regular:size=12}${nvidia memfreq} Mhz${font}
+${offset 5}Temperature ${voffset -6}${alignr}${font NotoSansMono-Regular:size=12}${nvidia temp}°C${font}
+
+###########
+#### Memory
+###########
+${font NotoSans-Bold:size=16}${color7}Memory ${hr}${color}${font}
+
+${offset 5}${color}RAM :    ${voffset -6}${alignr}${font NotoSansMono-Regular:size=12}$mem/$memmax $memperc%
+${color7}${font}${membar 16}
+${color7}${font}${swapbar 16}
+${offset 5}${color}Swap:    ${voffset -6}${alignr}${font NotoSansMono-Regular:size=12}$swap/$swapmax $swapperc%
+
+###########
+#### Network
+###########
+${font NotoSans-Bold:size=16}${color8}Network ${hr}${color}${font}
+
+${offset 5}Ext IP Addr ${voffset -6}${color8}${alignr}${offset 10}${font NotoSansMono-Regular:size=12}${execi 99999 curl ipinfo.io/ip}${color}${font}
+${offset 5}IPv4 Addr   ${voffset -6}${color8}${alignr}${font NotoSansMono-Regular:size=12}${addr enp10s0}${font}
+
+${offset 5}${color8}▼ $color${totaldown enp10s0} ${alignr}${color8}▲ $color${totalup enp10s0}${font}
+
+###########
+#### filesystem
+###########
+${font NotoSans-Bold:size=16}${color9}Filesystem ${hr}${color}${font}
+
+${offset 5}${color}root (${fs_type /}) ${color8}${alignr}${fs_used /} / ${fs_size /}
+${offset 5}${color8}${fs_bar 8 /}
+
+${offset 5}${color}home (${fs_type /home}) ${color8}${alignr}${fs_used /home/} / ${fs_size /home/}
+${offset 5}${color8}${fs_bar 8 /home/}
+
+###########
+#### Top Processes
+###########
+${font NotoSans-Bold:size=16}${color3}Processes ${hr}${color}${font}
+
+${offset 5}${color4}Name               ${alignr}PID   CPU%   MEM%
+
+${offset 5}${color5}${top name 1} ${alignr}${top pid 1}    ${top cpu 1}    ${top mem 1}
+${offset 5}${color6}${top name 2} ${alignr}${top pid 2}    ${top cpu 2}    ${top mem 2}
+${offset 5}${color7}${top name 3} ${alignr}${top pid 3}    ${top cpu 3}    ${top mem 3}
+${offset 5}${color8}${top name 4} ${alignr}${top pid 4}    ${top cpu 4}    ${top mem 4}
+
+#
+# TODO: Need to make a lua script to automate maybe?
+# ${offset 5}Core 1 ${alignr}${color8}${cpubar cpu1 6,200}${color FFFDE2}
+# ${offset 5}Core 2 ${alignr}${color8}${cpubar cpu2 6,200}${color}
+# ${offset 5}Core 3 ${alignr}${color8}${cpubar cpu3 6,200}${color}
+# ${offset 5}Core 4 ${alignr}${color8}${cpubar cpu4 6,200}${color}
+# ${offset 5}Core 5 ${alignr}${color8}${cpubar cpu5 6,200}${color}
+# ${offset 5}Core 6 ${alignr}${color8}${cpubar cpu6 6,200}${color}
+# ${offset 5}Core 7 ${alignr}${color8}${cpubar cpu7 6,200}${color}
+# ${offset 5}Core 8 ${alignr}${color8}${cpubar cpu8 6,200}${color}
+# ${offset 5}Core 9 ${alignr}${color8}${cpubar cpu9 6,200}${color}
+# ${offset 5}Core 10${alignr}${color8}${cpubar cpu10 6,200}${color}
+# ${offset 5}Core 11${alignr}${color8}${cpubar cpu11 6,200}${color}
+# ${offset 5}Core 12${alignr}${color8}${cpubar cpu12 6,200}${color}
+# ${offset 5}Core 13${alignr}${color8}${cpubar cpu13 6,200}${color}
+# ${offset 5}Core 14${alignr}${color8}${cpubar cpu14 6,200}${color}
+# ${offset 5}Core 15${alignr}${color8}${cpubar cpu15 6,200}${color}
+# ${offset 5}Core 16${alignr}${color8}${cpubar cpu16 6,200}${color}
+# ${offset 5}Core 17${alignr}${color8}${cpubar cpu17 6,200}${color}
+# ${offset 5}Core 18${alignr}${color8}${cpubar cpu18 6,200}${color}
+# ${offset 5}Core 19${alignr}${color8}${cpubar cpu19 6,200}${color}
+# ${offset 5}Core 20${alignr}${color8}${cpubar cpu20 6,200}${color}
+# ${offset 5}Core 21${alignr}${color8}${cpubar cpu21 6,200}${color}
+# ${offset 5}Core 22${alignr}${color8}${cpubar cpu22 6,200}${color}
+# ${offset 5}Core 23${alignr}${color8}${cpubar cpu23 6,200}${color}
+# ${offset 5}Core 24${alignr}${color8}${cpubar cpu24 6,200}${color}
+]]
+
+
+
+
+
+

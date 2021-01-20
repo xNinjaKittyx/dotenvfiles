@@ -77,7 +77,10 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(
+  git
+  pyenv
+)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -108,9 +111,18 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias reloadzsh="source ~/.zshrc"
 alias editzsh="vim ~/.zshrc"
+
+# Git shortcuts
 alias gau="git add -u"
 alias gcm="git commit -m"
 alias gs="git status"
+
+alias checkforerrors="journalctl -p 3 -xb"
+
+# Aliases for lookingglass
+alias fixglass="sudo chown user:kvm /dev/shm/looking-glass && sudo chmod 660 /dev/shm/looking-glass"
+alias execglass="looking-glass-client -m 104 -K 60 -k  -b"
+
 eval "$(pyenv init -)"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.

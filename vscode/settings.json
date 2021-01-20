@@ -1,0 +1,21 @@
+{
+    "files.autoSave": "afterDelay",
+    "workbench.colorTheme": "Palenight Italic",
+    "telemetry.enableCrashReporter": false,
+    "telemetry.enableTelemetry": false,
+    "python.linting.pylamaEnabled": true,
+    "files.trimTrailingWhitespace": true,
+    "autoDocstring.docstringFormat": "google",
+    "window.zoomLevel": 0,
+    "editor.rules": [
+        80,
+        100,
+        120
+    ],
+    "python.linting.mypyEnabled": true,
+    "python.linting.pylintEnabled": false,
+    "terminal.integrated.fontFamily": "MesloLGS NF",
+    "python.formatting.provider": "black",
+    "python.insidersChannel": "off"
+    // "python.venvPath": "/home/user/.cache/pypoetry/virtualenvs/"
+}
