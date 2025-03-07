@@ -1,6 +1,7 @@
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/.cargo/bin:/usr/local/go/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
+
 autoload -Uz +X compinit && compinit
 autoload -Uz +X bashcompinit && bashcompinit
 

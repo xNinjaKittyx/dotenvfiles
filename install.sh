@@ -1,37 +1,63 @@
 #!/bin/bash
 
+if [[ "$(uname)" == "Darwin" ]]; then
+  echo "macOS Detected"
 
-if ! which zsh; then
-    if which pacman; then
-        echo "arch"
-        sudo pacman -Sy pyenv zsh
-        chsh -s $(which zsh)
-    elif which apt; then
-        echo "deb"
-	sudo apt update
-        sudo apt install pyenv zsh fd-find eza bat
-	ln -s $(which fdfind) ~/.local/bin/fd
-	if which batcat; then
-	    ln -s /usr/bin/batcat ~/.local/bin/bat
-	fi
-        chsh -s $(which zsh)
-    elif which brew; then
-        echo "brew"
-        brew install zsh nvim fd eza bat zsh-syntax-highlighting zsh-autosuggestions
-        chsh -s $(which zsh)
-    fi
+  if xcode-select -p &>/dev/null; then
+    echo "Xcode already installed"
+  else
+    echo "Installing commandline tools..."
+    xcode-select --install
+  fi
+  export DISTRO="macos"
+elif [[ "$(uname)" == "linux" ]]; then
+  echo "linux detected"
+  if [ -f /etc/lsb-release -o -d /etc/lsb-release.d ]; then
+    export DISTRO=$(lsb_release -i | cut -d: -f2 | sed s/'^\t'//)
+  # Otherwise, use release info file
+  else
+    export DISTRO=$(ls -d /etc/[A-Za-z]*[_-][rv]e[lr]* | grep -v "lsb" | cut -d'/' -f3 | cut -d'-' -f1 | cut -d'_' -f1)
+  fi
 fi
 
-curl -sS https://starship.rs/install.sh | sh
 
-stow -t ~ -d ./dotfiles
+if [[ "$DISTRO" == "macos" ]]; then
+  echo "macos"
+  if ! which brew; then
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  fi
+  brew analytics off
+  brew install \
+    stow git zsh neovim fd eza bat tmux fzf ripgrep tlrc \
+    zsh-syntax-highlighting zsh-autosuggestions
+elif [[ "$DISTRO" == "ubuntu" ]]; then
+  echo "ubuntu"
+  sudo apt update && sudo apt install \
+    stow git zsh neovim fd-find eza bat tmux fzf ripgrep tldr \
+    zsh-syntax-highlighting zsh-autosuggestions
+  ln -s $(which fdfind) ~/.local//bin/fd
+  if which batcat; then
+    ln -s /usr/bin/batcat ~/.local/bin/bat
+  fi
+elif [[ "DISTRO" == "arch" ]]; then
+  echo "archlinux"
+  pacman -Sy \
+    stow git zsh neovim fd eza bat tmux fzf ripgrep tldr \
+    zsh-syntax-highlighting zsh-autosuggestions
+fi
 
-# # Setup environment
-# sudo pacman -Syu
-# sudo pacman -Sy --noconfirm base-devel pyenv zsh vim
-# # Sync vi to vim
-# sudo ln -s /usr/bin/vim /usr/bin/vi
-# git clone https://aur.archlinux.org/ttf-meslo.git
-# cd ttf-meslo && makepkg -si --noconfirm && cd ..
-# chsh -s /bin/zsh
-# ./zsh_setup.sh
+chsh -s $(which zsh)
+
+if ! which starship >/dev/null; then
+  curl -sS https://starship.rs/install.sh | sh
+fi
+
+
+if [ ! -d "$HOME/dotenvfiles" ]; then
+  echo "Cloning dotfiles repository..."
+  git clone https://github.com/xNinjaKittyx/dotenvfiles.git $HOME/dotenvfiles
+fi
+
+cd $HOME/dotenvfiles || exit
+
+stow -t ~ dotfiles
