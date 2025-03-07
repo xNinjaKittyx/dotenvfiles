@@ -52,6 +52,10 @@ if ! which starship >/dev/null; then
   curl -sS https://starship.rs/install.sh | sh
 fi
 
+if [ ! -d "$HOME/.oh-my-zsh" ]; then
+  echo "installing oh-my-zsh"
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+fi
 
 if [ ! -d "$HOME/dotenvfiles" ]; then
   echo "Cloning dotfiles repository..."
