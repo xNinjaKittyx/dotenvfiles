@@ -8,12 +8,23 @@ if ! which zsh; then
         chsh -s $(which zsh)
     elif which apt; then
         echo "deb"
-        sudo apt install pyenv zsh
+	sudo apt update
+        sudo apt install pyenv zsh fd-find eza bat
+	ln -s $(which fdfind) ~/.local/bin/fd
+	if which batcat; then
+	    ln -s /usr/bin/batcat ~/.local/bin/bat
+	fi
+        chsh -s $(which zsh)
+    elif which brew; then
+        echo "brew"
+        brew install zsh nvim fd eza bat zsh-syntax-highlighting zsh-autosuggestions
         chsh -s $(which zsh)
     fi
 fi
 
+curl -sS https://starship.rs/install.sh | sh
 
+stow -t ~ -d ./dotfiles
 
 # # Setup environment
 # sudo pacman -Syu
