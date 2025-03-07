@@ -1,6 +1,8 @@
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/.cargo/bin:/usr/local/go/bin:$HOME/.local/bin:$HOME/bin:/usr/local/bin:$PATH
-eval "$(/opt/homebrew/bin/brew shellenv)"
+if [[ "$(uname)" == "Darwin" ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
 
 ZSH="$HOME/.oh-my-zsh"
 plugins=(git)
