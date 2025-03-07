@@ -10,7 +10,7 @@ autoload -Uz +X compinit && compinit
 autoload -Uz +X bashcompinit && bashcompinit
 
 alias vim="nvim"
-alias ls="eza"
+alias ls="eza --no-filesize --long --color=always --icons=always --no-user"
 alias tarz="tar -zxvf"
 alias editzsh="nvim ~/.zshrc"
 alias reloadzsh="source ~/.zshrc"
