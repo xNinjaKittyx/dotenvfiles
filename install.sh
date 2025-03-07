@@ -1,17 +1,24 @@
 #!/bin/bash
 
-
+# install zsh
 if ! which zsh; then
     if which pacman; then
         echo "arch"
-        sudo pacman -Sy pyenv zsh
+        sudo pacman -Sy pyenv zsh fd eza bat
         chsh -s $(which zsh)
     elif which apt; then
         echo "deb"
-        sudo apt install pyenv zsh
+        sudo apt install pyenv zsh fd eza bat
+        chsh -s $(which zsh)
+    elif which brew; then
+        echo "brew"
+        brew install zsh nvim fd eza bat
         chsh -s $(which zsh)
     fi
 fi
+
+# install starship.rs
+curl -sS https://starship.rs/install.sh | sh
 
 
 

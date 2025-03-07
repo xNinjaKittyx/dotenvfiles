@@ -1,0 +1,12 @@
+live_config_reload = true
+
+[window]
+[window.padding]
+x = 12
+y = 12
+
+[font]
+size = 14
+[font.normal]
+family = "MesloLGS NF"
+style = "Regular"
