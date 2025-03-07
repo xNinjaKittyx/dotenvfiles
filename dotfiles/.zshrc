@@ -1,6 +1,10 @@
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/.cargo/bin:/usr/local/go/bin:$HOME/.local/bin:/usr/local/bin:$PATH
+export PATH=$HOME/.cargo/bin:/usr/local/go/bin:$HOME/.local/bin:$HOME/bin:/usr/local/bin:$PATH
+eval "$(/opt/homebrew/bin/brew shellenv)"
 
+ZSH="$HOME/.oh-my-zsh"
+plugins=(git)
+source $ZSH/oh-my-zsh.sh
 
 autoload -Uz +X compinit && compinit
 autoload -Uz +X bashcompinit && bashcompinit
@@ -20,12 +24,14 @@ function showdiff() {
 }
 
 # if mac
-if which brew > /dev/null ; then
+if [[ "$(uname)" == "Darwin" ]]; then
     export DOCKER_CLIENT_TIMEOUT=360
     export COMPOSE_HTTP_TIMEOUT=360
     export HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=true
+    export GPG_TTY=$(tty)
     source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
     source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+    defaults write .GlobalPreferences com.apple.mouse.scaling -1
 else
     source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
     source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -57,12 +63,13 @@ export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
+# nvm
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# Rust
+. "$HOME/.cargo/env"
 
 eval "$(starship init zsh)"
 
