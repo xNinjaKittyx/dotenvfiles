@@ -7,3 +7,5 @@ Run
 
 wow so ez, much based
 
+plugins in tmux - CTRL+S -> I
+nvim should install plugins on first open
