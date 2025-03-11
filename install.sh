@@ -31,11 +31,23 @@ if [[ "$DISTRO" == "macos" ]]; then
     stow git zsh neovim fd eza bat tmux fzf ripgrep tlrc \
     zsh-syntax-highlighting zsh-autosuggestions
 elif [[ "$DISTRO" == "ubuntu" ]]; then
+  # TODO: Need to detect architecture as well for some of these
   echo "ubuntu"
   sudo apt update && sudo apt install \
-    stow git zsh neovim fd-find eza bat tmux fzf ripgrep tldr \
+    stow git zsh neovim fd-find bat tmux fzf ripgrep tldr \
     zsh-syntax-highlighting zsh-autosuggestions
-  ln -s $(which fdfind) ~/.local//bin/fd
+    
+  curl -LO https://github.com/eza-community/eza/releases/download/v0.20.23/eza_x86_64-unknown-linux-gnu.tar.gz
+  tar -zxvf eza_x86_64-unknown-linux-gnu.tar.gz
+  mv eza ~/.local/bin/eza
+  rm eza_x86_64-unknown-linux-gnu.zip
+
+  curl -LO https://github.com/junegunn/fzf/releases/download/v0.60.3/fzf-0.60.3-linux_amd64.tar.gz
+  tar -zxvf fzf-0.60.3-linux_amd64.tar.gz
+  mv fzf ~/.local/bin/fzf
+  rm fzf-0.60.3-linux_amd64.tar.gz
+  
+  ln -s $(which fdfind) ~/.local/bin/fd
   if which batcat; then
     ln -s /usr/bin/batcat ~/.local/bin/bat
   fi
