@@ -11,12 +11,23 @@ if [[ "$(uname)" == "Darwin" ]]; then
   fi
   export DISTRO="macos"
 elif [[ "$(uname)" == "Linux" ]]; then
+  if ! which sudo; then
+    SUDO=
+  else
+    SUDO=sudo
+  fi
   echo "linux detected"
   if [ -f /etc/lsb-release -o -d /etc/lsb-release.d ]; then
+    if ! which lsb_release; then
+      $SUDO apt update && $SUDO apt install lsb-release
+    fi
     export DISTRO=$(lsb_release -i | cut -d: -f2 | sed s/'^\t'//)
+    export DISTRO_VERSION=$(lsb_release -r | cut -d: -f2 | sed s/'^\t'//)
   # Otherwise, use release info file
   else
+    # TODO: Needs work
     export DISTRO=$(ls -d /etc/[A-Za-z]*[_-][rv]e[lr]* | grep -v "lsb" | cut -d'/' -f3 | cut -d'-' -f1 | cut -d'_' -f1)
+    export DISTRO_VERSION=$(lsb_release -r | cut -d: -f2 | sed s/'^\t'//)
   fi
 fi
 
@@ -34,7 +45,7 @@ elif [[ "$DISTRO" == "ubuntu" ]]; then
   # TODO: Need to detect architecture as well for some of these
   echo "ubuntu"
   sudo apt update && sudo apt install \
-    stow git zsh neovim fd-find bat tmux fzf ripgrep tldr \
+    stow git zsh neovim fd-find bat tmux ripgrep tldr \
     zsh-syntax-highlighting zsh-autosuggestions
     
   curl -LO https://github.com/eza-community/eza/releases/download/v0.20.23/eza_x86_64-unknown-linux-gnu.tar.gz
@@ -42,10 +53,18 @@ elif [[ "$DISTRO" == "ubuntu" ]]; then
   mv eza ~/.local/bin/eza
   rm eza_x86_64-unknown-linux-gnu.zip
 
+  # fzf on ubuntu 24.04 and below are too old.
   curl -LO https://github.com/junegunn/fzf/releases/download/v0.60.3/fzf-0.60.3-linux_amd64.tar.gz
   tar -zxvf fzf-0.60.3-linux_amd64.tar.gz
   mv fzf ~/.local/bin/fzf
   rm fzf-0.60.3-linux_amd64.tar.gz
+
+  # This is needed on 22.04 Ubuntu or older.
+  if [[ "$DISTRO_VERSION" == "22.04" ]]; then
+    sudo add-apt-repository ppa:neovim-ppa/unstable
+    sudo apt-get update
+    sudo apt-get install neovim
+  fi
   
   ln -s $(which fdfind) ~/.local/bin/fd
   if which batcat; then
