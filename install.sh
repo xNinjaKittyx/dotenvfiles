@@ -20,7 +20,7 @@ elif [[ "$(uname)" == "Linux" ]]; then
   echo "linux detected"
   if [ -f /etc/lsb-release -o -d /etc/lsb-release.d ]; then
     if ! which lsb_release; then
-      $SUDO apt update && $SUDO apt install lsb-release
+      $SUDO apt update && $SUDO apt install lsb-release -y
     fi
     export DISTRO=$(lsb_release -i | cut -d: -f2 | sed s/'^\t'//)
     export DISTRO_VERSION=$(lsb_release -r | cut -d: -f2 | sed s/'^\t'//)
@@ -32,6 +32,9 @@ elif [[ "$(uname)" == "Linux" ]]; then
   fi
 fi
 
+if [[ ! -d "$HOME/.local/bin" ]]; then
+  mkdir -p $HOME/.local/bin
+fi
 
 if [[ "$DISTRO" == "macos" ]]; then
   echo "macos"
