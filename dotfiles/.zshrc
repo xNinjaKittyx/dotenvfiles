@@ -57,13 +57,17 @@ export FZF_CTRL_T_OPTS="--preview 'bat --color=always -n --line-range :500 {}'"
 export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always {} | head -200'"
 
 
-source ~/.config/secrets.env
+if [[ -f ~/.config/secrets.env ]]; then
+  source ~/.config/secrets.env
+fi
 
 export PYENV_ROOT="$HOME/.pyenv"
 
 # Pyenv
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
+if [[ -d $PYENV_ROOT/bin ]]; then
+  export PATH="$PYENV_ROOT/bin:$PATH"
+  eval "$(pyenv init -)"
+fi
 
 # nvm
 export NVM_DIR="$HOME/.nvm"
@@ -71,7 +75,9 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # Rust
-. "$HOME/.cargo/env"
+if [[ -d $HOME/.cargo ]]; then
+  . "$HOME/.cargo/env"
+fi
 
 eval "$(starship init zsh)"
 
