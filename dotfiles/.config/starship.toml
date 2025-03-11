@@ -1,6 +1,6 @@
 format = """
 [ ](bg:#a3aed2 fg:#090c0c)\
-[ 🐧 ](bg:#a3aed2 fg:#090c0c)\
+$os\
 [](bg:#769ff0 fg:#a3aed2)\
 $directory\
 [](fg:#769ff0 bg:#394260)\
@@ -51,6 +51,10 @@ format = '[[ $symbol ($version) ](fg:#769ff0 bg:#212736)]($style)'
 symbol = ""
 style = "bg:#212736"
 format = '[[ $symbol ($version) ](fg:#769ff0 bg:#212736)]($style)'
+
+[os]
+disabled = false
+format = '[[ $symbol ](bg:#a3aed2 fg:#090c0c)]($style)' 
 
 [php]
 symbol = ""
