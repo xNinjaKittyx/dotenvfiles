@@ -13,14 +13,14 @@ if [[ "$(uname)" == "Darwin" ]]; then
   export DISTRO="macos"
 elif [[ "$(uname)" == "Linux" ]]; then
   if ! which sudo; then
-    SUDO=
+    SUDO=apt
   else
-    SUDO=sudo
+    SUDO=sudo apt
   fi
   echo "linux detected"
   if [ -f /etc/lsb-release -o -d /etc/lsb-release.d ]; then
     if ! which lsb_release; then
-      $SUDO apt update && $SUDO apt install lsb-release -y
+      $SUDO update && $SUDO install lsb-release -y
     fi
     export DISTRO=$(lsb_release -i | cut -d: -f2 | sed s/'^\t'//)
     export DISTRO_VERSION=$(lsb_release -r | cut -d: -f2 | sed s/'^\t'//)
@@ -48,7 +48,7 @@ if [[ "$DISTRO" == "macos" ]]; then
 elif [[ "$DISTRO" == "Ubuntu" ]]; then
   # TODO: Need to detect architecture as well for some of these
   echo "ubuntu"
-  $SUDO apt update && $SUDO apt install \
+  $SUDO update && $SUDO install \
     stow git zsh neovim fd-find bat tmux ripgrep tldr \
     zsh-syntax-highlighting zsh-autosuggestions software-properties-common -y
     
@@ -65,15 +65,13 @@ elif [[ "$DISTRO" == "Ubuntu" ]]; then
 
   # This is needed on 22.04 Ubuntu or older.
   if [[ "$DISTRO_VERSION" == "22.04" ]]; then
-    $SUDO add-apt-repository ppa:neovim-ppa/unstable
-    $SUDO apt-get update
-    $SUDO apt-get install neovim
+    $SUDO add-apt-repository ppa:neovim-ppa/unstable -y
+    $SUDO update
+    $SUDO install neovim -y
   fi
   
-  ln -s $(which fdfind) ~/.local/bin/fd
-  if which batcat; then
-    ln -s /usr/bin/batcat ~/.local/bin/bat
-  fi
+  ln -s $(which fdfind) ~/.local/bin/fd || true
+  ln -s /usr/bin/batcat ~/.local/bin/bat || true
 elif [[ "DISTRO" == "arch" ]]; then
   echo "archlinux"
   pacman -Sy \
@@ -89,7 +87,7 @@ fi
 
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
   echo "installing oh-my-zsh"
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  sh -c "$(REPLACE_RC='no' curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 fi
 
 if [ ! -d "$HOME/dotenvfiles" ]; then
