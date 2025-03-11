@@ -44,13 +44,13 @@ if [[ "$DISTRO" == "macos" ]]; then
   brew analytics off
   brew install \
     stow git zsh neovim fd eza bat tmux fzf ripgrep tlrc \
-    zsh-syntax-highlighting zsh-autosuggestions
+    zsh-syntax-highlighting zsh-autosuggestions 
 elif [[ "$DISTRO" == "Ubuntu" ]]; then
   # TODO: Need to detect architecture as well for some of these
   echo "ubuntu"
-  sudo apt update && sudo apt install \
+  $SUDO apt update && $SUDO apt install \
     stow git zsh neovim fd-find bat tmux ripgrep tldr \
-    zsh-syntax-highlighting zsh-autosuggestions
+    zsh-syntax-highlighting zsh-autosuggestions software-properties-common -y
     
   curl -LO https://github.com/eza-community/eza/releases/download/v0.20.23/eza_x86_64-unknown-linux-gnu.tar.gz
   tar -zxvf eza_x86_64-unknown-linux-gnu.tar.gz
