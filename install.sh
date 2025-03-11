@@ -55,7 +55,7 @@ elif [[ "$DISTRO" == "Ubuntu" ]]; then
   curl -LO https://github.com/eza-community/eza/releases/download/v0.20.23/eza_x86_64-unknown-linux-gnu.tar.gz
   tar -zxvf eza_x86_64-unknown-linux-gnu.tar.gz
   mv eza ~/.local/bin/eza
-  rm eza_x86_64-unknown-linux-gnu.zip
+  rm eza_x86_64-unknown-linux-gnu.tar.gz
 
   # fzf on ubuntu 24.04 and below are too old.
   curl -LO https://github.com/junegunn/fzf/releases/download/v0.60.3/fzf-0.60.3-linux_amd64.tar.gz
