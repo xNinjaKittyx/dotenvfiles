@@ -41,7 +41,7 @@ if [[ "$DISTRO" == "macos" ]]; then
   brew install \
     stow git zsh neovim fd eza bat tmux fzf ripgrep tlrc \
     zsh-syntax-highlighting zsh-autosuggestions
-elif [[ "$DISTRO" == "ubuntu" ]]; then
+elif [[ "$DISTRO" == "Ubuntu" ]]; then
   # TODO: Need to detect architecture as well for some of these
   echo "ubuntu"
   sudo apt update && sudo apt install \
