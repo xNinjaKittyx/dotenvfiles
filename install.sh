@@ -65,9 +65,9 @@ elif [[ "$DISTRO" == "Ubuntu" ]]; then
 
   # This is needed on 22.04 Ubuntu or older.
   if [[ "$DISTRO_VERSION" == "22.04" ]]; then
-    sudo add-apt-repository ppa:neovim-ppa/unstable
-    sudo apt-get update
-    sudo apt-get install neovim
+    $SUDO add-apt-repository ppa:neovim-ppa/unstable
+    $SUDO apt-get update
+    $SUDO apt-get install neovim
   fi
   
   ln -s $(which fdfind) ~/.local/bin/fd
