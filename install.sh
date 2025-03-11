@@ -10,7 +10,7 @@ if [[ "$(uname)" == "Darwin" ]]; then
     xcode-select --install
   fi
   export DISTRO="macos"
-elif [[ "$(uname)" == "linux" ]]; then
+elif [[ "$(uname)" == "Linux" ]]; then
   echo "linux detected"
   if [ -f /etc/lsb-release -o -d /etc/lsb-release.d ]; then
     export DISTRO=$(lsb_release -i | cut -d: -f2 | sed s/'^\t'//)
