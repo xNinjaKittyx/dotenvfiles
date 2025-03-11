@@ -25,6 +25,9 @@ function showdiff() {
     git diff $1~ $1
 }
 
+function showdockerlogs() {
+    co=$(sudo docker inspect --format='{{.Name}}' $(sudo docker ps -aq --no-trunc) | sed 's/^.\(.*\)/\1/' | sort); for c_name in $co; do c_size=$(sudo docker inspect --format={{.ID}} $c_name | xargs -I @ sh -c 'sudo ls -hl /var/lib/docker/containers/@/@-json.log' | awk '{print $5 }'); YE='\033[1;33m'; NC='\033[0m'; PI='\033[1;35m'; RE='\033[1;31m'; case "$c_size" in *"K"*) c_size=${YE}$c_size${NC};; *"M"*) p=${c_size%.*}; q=${p%M*}; r=${#q}; if [[ $r -lt 3 ]]; then c_size=${PI}$c_size${NC}; else c_size=${RE}$c_size${NC}; fi ;;  esac;  echo -e "$c_name $c_size"; done
+}
 # if mac
 if [[ "$(uname)" == "Darwin" ]]; then
     export DOCKER_CLIENT_TIMEOUT=360
