@@ -13,14 +13,14 @@ if [[ "$(uname)" == "Darwin" ]]; then
   export DISTRO="macos"
 elif [[ "$(uname)" == "Linux" ]]; then
   if ! which sudo; then
-    SUDO=apt
+    SUDO=''
   else
-    SUDO=sudo apt
+    SUDO='sudo'
   fi
   echo "linux detected"
   if [ -f /etc/lsb-release -o -d /etc/lsb-release.d ]; then
     if ! which lsb_release; then
-      $SUDO update && $SUDO install lsb-release -y
+      $SUDO apt update && $SUDO apt install lsb-release -y
     fi
     export DISTRO=$(lsb_release -i | cut -d: -f2 | sed s/'^\t'//)
     export DISTRO_VERSION=$(lsb_release -r | cut -d: -f2 | sed s/'^\t'//)
@@ -48,10 +48,10 @@ if [[ "$DISTRO" == "macos" ]]; then
 elif [[ "$DISTRO" == "Ubuntu" ]]; then
   # TODO: Need to detect architecture as well for some of these
   echo "ubuntu"
-  $SUDO update && $SUDO install \
+  $SUDO apt update && $SUDO apt install \
     stow git zsh neovim fd-find bat tmux ripgrep tldr \
     zsh-syntax-highlighting zsh-autosuggestions software-properties-common -y
-    
+
   curl -LO https://github.com/eza-community/eza/releases/download/v0.20.23/eza_x86_64-unknown-linux-gnu.tar.gz
   tar -zxvf eza_x86_64-unknown-linux-gnu.tar.gz
   mv eza ~/.local/bin/eza
@@ -66,8 +66,8 @@ elif [[ "$DISTRO" == "Ubuntu" ]]; then
   # This is needed on 22.04 Ubuntu or older.
   if [[ "$DISTRO_VERSION" == "22.04" ]]; then
     $SUDO add-apt-repository ppa:neovim-ppa/unstable -y
-    $SUDO update
-    $SUDO install neovim -y
+    $SUDO apt update
+    $SUDO apt install neovim -y
   fi
   
   ln -s $(which fdfind) ~/.local/bin/fd || true
