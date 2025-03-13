@@ -19,6 +19,7 @@ alias reloadzsh="source ~/.zshrc"
 alias editalacritty="nvim ~/.alacritty.toml"
 alias edittmux="nvim ~/.tmux.conf"
 alias gcm="git commit -m"
+alias gdc="git diff --cached"
 alias fman="compgen -c | fzf | xargs man"
 
 function showdiff() {
