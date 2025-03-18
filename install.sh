@@ -25,12 +25,30 @@ elif [[ "$(uname)" == "Linux" ]]; then
     export DISTRO=$(lsb_release -i | cut -d: -f2 | sed s/'^\t'//)
     export DISTRO_VERSION=$(lsb_release -r | cut -d: -f2 | sed s/'^\t'//)
   # Otherwise, use release info file
+  elif [[ "$(ls /etc/os-release | grep ID)" == "unraid-os" ]]; then
+    export DISTRO="unraid"
+    export DISTRO_VERSION=$(ls /etc/os-release | grep VERSION_ID)
   else
     # TODO: Needs work
     export DISTRO=$(ls -d /etc/[A-Za-z]*[_-][rv]e[lr]* | grep -v "lsb" | cut -d'/' -f3 | cut -d'-' -f1 | cut -d'_' -f1)
     export DISTRO_VERSION=$(lsb_release -r | cut -d: -f2 | sed s/'^\t'//)
   fi
 fi
+
+install_eza() {
+  curl -LO https://github.com/eza-community/eza/releases/download/v0.20.23/eza_x86_64-unknown-linux-gnu.tar.gz
+  tar -zxvf eza_x86_64-unknown-linux-gnu.tar.gz
+  mv eza ~/.local/bin/eza
+  rm eza_x86_64-unknown-linux-gnu.tar.gz
+}
+
+install_fzf() {
+  # fzf on ubuntu 24.04 and below are too old.
+  curl -LO https://github.com/junegunn/fzf/releases/download/v0.60.3/fzf-0.60.3-linux_amd64.tar.gz
+  tar -zxvf fzf-0.60.3-linux_amd64.tar.gz
+  mv fzf ~/.local/bin/fzf
+  rm fzf-0.60.3-linux_amd64.tar.gz
+}
 
 if [[ ! -d "$HOME/.local/bin" ]]; then
   mkdir -p $HOME/.local/bin
@@ -52,16 +70,8 @@ elif [[ "$DISTRO" == "Ubuntu" ]]; then
     stow git zsh neovim fd-find bat tmux ripgrep tldr \
     zsh-syntax-highlighting zsh-autosuggestions software-properties-common -y
 
-  curl -LO https://github.com/eza-community/eza/releases/download/v0.20.23/eza_x86_64-unknown-linux-gnu.tar.gz
-  tar -zxvf eza_x86_64-unknown-linux-gnu.tar.gz
-  mv eza ~/.local/bin/eza
-  rm eza_x86_64-unknown-linux-gnu.tar.gz
-
-  # fzf on ubuntu 24.04 and below are too old.
-  curl -LO https://github.com/junegunn/fzf/releases/download/v0.60.3/fzf-0.60.3-linux_amd64.tar.gz
-  tar -zxvf fzf-0.60.3-linux_amd64.tar.gz
-  mv fzf ~/.local/bin/fzf
-  rm fzf-0.60.3-linux_amd64.tar.gz
+  install_eza()
+  install_fzf()
 
   # This is needed on 22.04 Ubuntu or older.
   if [[ "$DISTRO_VERSION" == "22.04" ]]; then
@@ -77,6 +87,12 @@ elif [[ "DISTRO" == "arch" ]]; then
   pacman -Sy \
     stow git zsh neovim fd eza bat tmux fzf ripgrep tldr \
     zsh-syntax-highlighting zsh-autosuggestions
+elif [[ "DISTRO" == "unraid" ]]; then
+  echo "UNRAID"
+
+  install_eza()
+  install_fzf()
+
 fi
 
 chsh -s $(which zsh)
