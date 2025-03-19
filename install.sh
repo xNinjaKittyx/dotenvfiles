@@ -50,6 +50,15 @@ install_fzf() {
   rm fzf-0.60.3-linux_amd64.tar.gz
 }
 
+install_nvim() {
+  curl -LO https://github.com/neovim/neovim/releases/download/v0.10.4/nvim-linux-x86_64.tar.gz
+  tar -zxvf nvim-linux-x86_64.tar.gz
+  cd nvim-linux-x86_64
+  cp -r bin/* /usr/local/bin/
+  cp -r lib/* /usr/local/lib/
+  cp -r share/* /usr/local/share/
+}
+
 if [[ ! -d "$HOME/.local/bin" ]]; then
   mkdir -p $HOME/.local/bin
 fi
@@ -92,6 +101,7 @@ elif [[ "DISTRO" == "unraid" ]]; then
 
   install_eza()
   install_fzf()
+  install_nvim()
 
 fi
 
