@@ -20,7 +20,9 @@ alias editalacritty="nvim ~/.alacritty.toml"
 alias edittmux="nvim ~/.tmux.conf"
 alias gcm="git commit -m"
 alias gdc="git diff --cached"
+alias gs="git status"
 alias fman="compgen -c | fzf | xargs man"
+alias dockerbash="docker run -it --entrypoint /bin/bash --no-healthcheck"
 
 function showdiff() {
     git diff $1~ $1
