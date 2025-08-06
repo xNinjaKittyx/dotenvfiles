@@ -79,8 +79,8 @@ elif [[ "$DISTRO" == "Ubuntu" ]]; then
     stow git zsh neovim fd-find bat tmux ripgrep tldr \
     zsh-syntax-highlighting zsh-autosuggestions software-properties-common -y
 
-  install_eza()
-  install_fzf()
+  install_eza
+  install_fzf
 
   # This is needed on 22.04 Ubuntu or older.
   if [[ "$DISTRO_VERSION" == "22.04" ]]; then
@@ -99,9 +99,9 @@ elif [[ "DISTRO" == "arch" ]]; then
 elif [[ "DISTRO" == "unraid" ]]; then
   echo "UNRAID"
 
-  install_eza()
-  install_fzf()
-  install_nvim()
+  install_eza
+  install_fzf
+  install_nvim
 
 fi
 
