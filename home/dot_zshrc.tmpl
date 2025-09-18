@@ -80,6 +80,8 @@ alias gs="git status"
 alias fman="compgen -c | fzf | xargs man"
 alias dockerbash="docker run -it --entrypoint /bin/bash --no-healthcheck"
 
+export GPG_TTY=$(tty)
+
 function showdiff {
     git diff $1~ $1
 }
