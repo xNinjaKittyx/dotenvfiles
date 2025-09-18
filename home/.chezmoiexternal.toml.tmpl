@@ -31,6 +31,13 @@
     executable = true
     path = "uv-x86_64-unknown-linux-gnu/uv"
 
+[".local/bin/uvx"]
+    type = "archive-file"
+    url = {{ gitHubLatestReleaseAssetURL "astral-sh/uv" "uv-x86_64-unknown-linux-gnu.tar.gz" | quote }}
+    refreshPeriod = "72h"
+    executable = true
+    path = "uv-x86_64-unknown-linux-gnu/uvx"
+
 {{- end }}
 
 {{- if eq .osid "darwin" }}
@@ -92,3 +99,10 @@
         "*/.github",
         "*/.gitignore",
     ]
+
+[".config/nvm"]
+    type = "archive"
+    url = "https://github.com/nvm-sh/nvm/archive/refs/tags/v0.40.3.tar.gz"
+    exact = true
+    refreshPeriod = "72h"
+    stripComponents = 1
